@@ -5,9 +5,11 @@
  */
 
 namespace cpp org.opensimulator.bulletsim
-namespace csharp OpenSim.Region.Physics.BulletSPlugin
+namespace csharp OpenSim.Region.Physics.BulletThrift
 
 typedef double ffloat
+typedef i64 int
+typedef i32 uint32_t
 
 typedef i64 memPtr
 typedef memPtr BulletSimStar
@@ -42,7 +44,7 @@ struct Transform {
 struct Update {
     1: required IDTYPE ID;
     2: required Vector3 position;
-    3: required Quaterion rotation;
+    3: required Quaternion rotation;
     4: required Vector3 velocity;
     5: required Vector3 acceleration;
     6: required Vector3 angularVelocity
@@ -84,6 +86,27 @@ struct paramBlock {
     15: required ffloat globalContactBreakingThreshold;
 
     16: required ffloat physicsLoggingFrames
+}
+
+// API-exposed structure defining an object
+typedef i64 MESHKEYTYPE
+typedef i32 PhysicsShapeType
+struct ShapeData {
+	// note that bool's are passed as floats's since bool size changes by language
+	1: required IDTYPE ID;
+	2: required PhysicsShapeType Type;
+	3: required Vector3 Position;
+	4: required Quaternion Rotation;
+	5: required Vector3 Velocity;
+	6: required Vector3 Scale;
+	7: required ffloat Mass;
+	8: required ffloat Buoyancy;		// gravity effect on the object
+	9: required MESHKEYTYPE HullKey;
+	10: required MESHKEYTYPE MeshKey;
+	11: required ffloat Friction;
+	12: required ffloat Restitution;
+	13: required ffloat Collidable;	// things can collide with this object
+	14: required ffloat Static	// object is non-moving. Otherwise gravity, etc
 }
 
 struct HACDParams {
@@ -129,7 +152,7 @@ struct RaycastHit {
     3: required Vector3 Normal
 }
 
-service BulletSimStarThrift {
+service BulletSimThrift {
     void Initialize2(1: required Vector3 maxPosition,
                     2: required paramBlock parms,
                     3: required int maxCollisions,
@@ -303,146 +326,146 @@ service BulletSimStarThrift {
     				6: required ffloat scalefactor,
     				7: required ffloat collisionmargin
     ),
-    btcollisionshapestar creategroundplaneshape2(
-    				1: required idtype id,
+    btCollisionShapeStar Creategroundplaneshape2(
+    				1: required IDTYPE id,
     				2: required ffloat height,
     				3: required ffloat collisionmargin
     ),
-    bttypedconstraintstar create6dofconstraint2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj1,
-    				3: required btcollisionshapestar obj2,
-    				4: required vector3 frame1loc,
-    				5: required quaternion frame1rot,
-    				6: required vector3 frame2loc,
-    				7: required quaternion frame2rot,
+    btTypedConstraintStar Create6dofconstraint2(
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj1,
+    				3: required btCollisionShapeStar obj2,
+    				4: required Vector3 frame1loc,
+    				5: required Quaternion frame1rot,
+    				6: required Vector3 frame2loc,
+    				7: required Quaternion frame2rot,
     				8: required bool uselinearreferenceframea,
     				9: required bool disablecollisionsbetweenlinkedbodies
     ),
-    bttypedconstraintstar create6dofconstrainttopoint2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj1,
-    				3: required btcollisionshapestar obj2,
-    				4: required vector3 joinpoint,
+    btTypedConstraintStar Create6dofconstrainttopoint2(
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj1,
+    				3: required btCollisionShapeStar obj2,
+    				4: required Vector3 joinpoint,
     				5: required bool uselinearreferenceframea,
     				6: required bool disablecollisionsbetweenlinkedbodies
     ),
-    bttypedconstraintstar create6dofconstraintfixed2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj1,
-    				3: required vector3 frameinbloc,
-    				4: required quaternion frameinbrot,
+    btTypedConstraintStar Create6dofconstraintfixed2(
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj1,
+    				3: required Vector3 frameinbloc,
+    				4: required Quaternion frameinbrot,
     				5: required bool uselinearreferenceframeb,
     				6: required bool disablecollisionsbetweenlinkedbodies
     ),
-    bttypedconstraintstar create6dofspringconstraint2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj1,
-    				3: required btcollisionshapestar obj2,
-    				4: required vector3 frame1loc,
-    				5: required quaternion frame1rot,
-    				6: required vector3 frame2loc,
-    				7: required quaternion frame2rot,
+    btTypedConstraintStar Create6dofspringconstraint2(
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj1,
+    				3: required btCollisionShapeStar obj2,
+    				4: required Vector3 frame1loc,
+    				5: required Quaternion frame1rot,
+    				6: required Vector3 frame2loc,
+    				7: required Quaternion frame2rot,
     				8: required bool uselinearreferenceframea,
     				9: required bool disablecollisionsbetweenlinkedbodies
     ),
-    bttypedconstraintstar createhingeconstraint2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj1,
-    				3: required btcollisionshapestar obj2,
-    				4: required vector3 pivotina,
-    				5: required vector3 pivotinb,
-    				6: required vector3 axisina,
-    				7: required vector3 axisinb,
+    btTypedConstraintStar Createhingeconstraint2(
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj1,
+    				3: required btCollisionShapeStar obj2,
+    				4: required Vector3 pivotina,
+    				5: required Vector3 pivotinb,
+    				6: required Vector3 axisina,
+    				7: required Vector3 axisinb,
     				8: required bool usereferenceframea,
     				9: required bool disablecollisionsbetweenlinkedbodies
     ),
-    bttypedconstraintstar createsliderconstraint2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj1,
-    				3: required btcollisionshapestar obj2,
-    				4: required vector3 frame1loc,
-    				5: required quaternion frame1rot,
-    				6: required vector3 frame2loc,
-    				7: required quaternion frame2rot,
+    btTypedConstraintStar Createsliderconstraint2(
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj1,
+    				3: required btCollisionShapeStar obj2,
+    				4: required Vector3 frame1loc,
+    				5: required Quaternion frame1rot,
+    				6: required Vector3 frame2loc,
+    				7: required Quaternion frame2rot,
     				8: required bool uselinearreferenceframea,
     				9: required bool disablecollisionsbetweenlinkedbodies
     ),
-    bttypedconstraintstar createconetwistconstraint2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj1,
-    				3: required btcollisionshapestar obj2,
-    				4: required vector3 frame1loc,
-    				5: required quaternion frame1rot,
-    				6: required vector3 frame2loc,
-    				7: required quaternion frame2rot,
+    btTypedConstraintStar Createconetwistconstraint2(
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj1,
+    				3: required btCollisionShapeStar obj2,
+    				4: required Vector3 frame1loc,
+    				5: required Quaternion frame1rot,
+    				6: required Vector3 frame2loc,
+    				7: required Quaternion frame2rot,
     				8: required bool disablecollisionsbetweenlinkedbodies
     ),
-    bttypedconstraintstar creategearconstraint2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj1,
-    				3: required btcollisionshapestar obj2,
-    				4: required vector3 axisina,
-    				5: required vector3 axisinb,
-    				6: required vector3 frame2loc,
-    				7: required quaternion frame2rot,
+    btTypedConstraintStar Creategearconstraint2(
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj1,
+    				3: required btCollisionShapeStar obj2,
+    				4: required Vector3 axisina,
+    				5: required Vector3 axisinb,
+    				6: required Vector3 frame2loc,
+    				7: required Quaternion frame2rot,
     				8: required ffloat ratio,
     				9: required bool disablecollisionsbetweenlinkedbodies
     ),
-    bttypedconstraintstar createpoint2pointconstraint2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj1,
-    				3: required btcollisionshapestar obj2,
-    				4: required vector3 pivotina,
-    				5: required vector3 pivotinb,
+    btTypedConstraintStar Createpoint2pointconstraint2(
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj1,
+    				3: required btCollisionShapeStar obj2,
+    				4: required Vector3 pivotina,
+    				5: required Vector3 pivotinb,
     				6: required bool disablecollisionsbetweenlinkedbodies
     ),
-    setframes2(
-    				1: required bttypedconstraintstar constrain,
-    				2: required vector3 framea,
-    				3: required quaternion framearot,
-    				4: required vector3 frameb,
-    				5: required quaternion framebrot
+    bool setframes2(
+    				1: required btTypedConstraintStar constrain,
+    				2: required Vector3 framea,
+    				3: required Quaternion framearot,
+    				4: required Vector3 frameb,
+    				5: required Quaternion framebrot
     ),
     void setconstraintenable2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required ffloat truefalse
     ),
     void setconstraintnumsolveriterations2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required ffloat iterations
     ),
     bool setlinearlimits2(
-    				1: required bttypedconstraintstar constrain,
-    				2: required vector3 low,
-    				3: required vector3 high
+    				1: required btTypedConstraintStar constrain,
+    				2: required Vector3 low,
+    				3: required Vector3 high
     ),
     bool setangularlimits2(
-    				1: required bttypedconstraintstar constrain,
-    				2: required vector3 low,
-    				3: required vector3 high
+    				1: required btTypedConstraintStar constrain,
+    				2: required Vector3 low,
+    				3: required Vector3 high
     ),
     bool useframeoffset2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required ffloat enable
     ),
     bool translationallimitmotor2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required ffloat enable,
     				3: required ffloat targetvelocity,
     				4: required ffloat maxmotorforce
     ),
     bool setbreakingimpulsethreshold2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required ffloat thresh
     ),
     bool constraintsetaxis2(
-    				1: required bttypedconstraintstar constrain,
-    				2: required vector3 axisa,
-    				3: required vector3 axisb
+    				1: required btTypedConstraintStar constrain,
+    				2: required Vector3 axisa,
+    				3: required Vector3 axisb
     ),
     bool constrainthingesetlimit2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required ffloat low,
     				3: required ffloat high,
     				4: required ffloat softness,
@@ -450,516 +473,513 @@ service BulletSimStarThrift {
     				6: required ffloat relaxation
     ),
     bool constraintspringenable2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required int index,
     				3: required bool onoff
     ),
     bool constraintspringsetequilibriumpoint2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required int index,
     				3: required ffloat eqpoint
     ),
     bool constraintspringsetstiffness2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required int index,
     				3: required ffloat stiffness
     ),
     bool constraintspringsetdamping2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required int index,
     				3: required ffloat damping
     ),
     bool constraintslidersetlimits2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required int upperlower,
     				3: required int linang,
     				4: required ffloat val
     ),
     bool constraintsliderset2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required int softrestdamp,
     				3: required int dirlimortho,
     				4: required int linang,
     				5: required ffloat val
     ),
     bool constraintslidermotorenable2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required int linang,
     				3: required ffloat numerictruefalse
     ),
     bool constraintslidermotor2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required int forcevel,
     				3: required int linang,
     				4: required ffloat val
     ),
-    bool calculatetransforms2(
-    				1: required bttypedconstraintstar constrain
+    bool calculateTransforms2(
+    				1: required btTypedConstraintStar constrain
     ),
     bool setconstraintparam2(
-    				1: required bttypedconstraintstar constrain,
+    				1: required btTypedConstraintStar constrain,
     				2: required int paramindex,
     				3: required ffloat value,
     				4: required int axis
     ),
     bool destroyconstraint2(
-    				1: required bulletsimstar sim,
-    				2: required bttypedconstraintstar constrain
+    				1: required BulletSimStar sim,
+    				2: required btTypedConstraintStar constrain
     ),
     // =======================================
     void updatesingleaabb2(
-    				1: required bulletsimstar world,
-    				2: required btcollisionshapestar obj
+    				1: required BulletSimStar world,
+    				2: required btCollisionShapeStar obj
     ),
     void updateaabbs2(
-    				1: required bulletsimstar world
+    				1: required BulletSimStar world
     ),
     bool getforceupdateallaabbs2(
-    				1: required bulletsimstar world
+    				1: required BulletSimStar world
     ),
     void setforceupdateallaabbs2(
-    				1: required bulletsimstar world,
+    				1: required BulletSimStar world,
     				2: required bool forceupdateallaabbs
     ),
     // ========================================
     bool addobjecttoworld2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj
     ),
     bool removeobjectfromworld2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj
     ),
     bool clearcollisionproxycache2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj
     ),
     bool addconstrainttoworld2(
-    				1: required bulletsimstar sim,
-    				2: required bttypedconstraintstar constrain,
+    				1: required BulletSimStar sim,
+    				2: required btTypedConstraintStar constrain,
     				3: required bool disablecollisionsbetweenlinkedbodies
     ),
     bool removeconstraintfromworld2(
-    				1: required bulletsimstar sim,
-    				2: required bttypedconstraintstar constrain
+    				1: required BulletSimStar sim,
+    				2: required btTypedConstraintStar constrain
     ),
     // ========================================
-    vector3 getanisotropicfriction2(
-    				1: required btcollisionshapestar obj
+    Vector3 getanisotropicfriction2(
+    				1: required btCollisionShapeStar obj
     ),
     void setanisotropicfriction2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 africt
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 africt
     ),
     bool hasanisotropicfriction2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setcontactprocessingthreshold2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat threshold
     ),
     ffloat getcontactprocessingthreshold2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     bool isstaticobject2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     bool iskinematicobject2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     bool isstaticorkinematicobject2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     bool hascontactresponse2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setcollisionshape2(
-    				1: required bulletsimstar sim,
-    				2: required btcollisionshapestar obj,
-    				3: required btcollisionshapestar shape
+    				1: required BulletSimStar sim,
+    				2: required btCollisionShapeStar obj,
+    				3: required btCollisionShapeStar shape
     ),
-    btcollisionshapestar getcollisionshape2(
-    				1: required btcollisionshapestar obj
+    btCollisionShapeStar getcollisionshape2(
+    				1: required btCollisionShapeStar obj
     ),
     int getactivationstate2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setactivationstate2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required int state
     ),
     void setdeactivationtime2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat dtime
     ),
     ffloat getdeactivationtime2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void forceactivationstate2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required int newstate
     ),
     void activate2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required bool forceactivation
     ),
     bool isactive2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setrestitution2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat val
     ),
     ffloat getrestitution2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setfriction2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat val
     ),
     ffloat getfriction2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
-    void setworldtransform2(
-    				1: required btcollisionshapestar obj,
-    				2: required transform& trans
+    void setworldTransform2(
+    				1: required btCollisionShapeStar obj,
+    				2: required Transform& trans
     ),
-    transform getworldtransform2(
-    				1: required btcollisionshapestar obj
+    Transform getworldTransform2(
+    				1: required btCollisionShapeStar obj
     ),
-    vector3 getposition2(
-    				1: required btcollisionshapestar obj
+    Vector3 getposition2(
+    				1: required btCollisionShapeStar obj
     ),
-    quaternion getorientation2(
-    				1: required btcollisionshapestar obj
+    Quaternion getorientation2(
+    				1: required btCollisionShapeStar obj
     ),
     void settranslation2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 position,
-    				3: required quaternion rotation
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 position,
+    				3: required Quaternion rotation
     ),
     btbroadphaseproxyStar getbroadphasehandle2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setbroadphasehandle2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required btbroadphaseproxyStar proxy
     ),
-    transform getinterpolationworldtransform2(
-    				1: required btcollisionshapestar obj
+    Transform getinterpolationworldTransform2(
+    				1: required btCollisionShapeStar obj
     ),
-    void setinterpolationworldtransform2(
-    				1: required btcollisionshapestar obj,
-    				2: required transform trans
+    void setinterpolationworldTransform2(
+    				1: required btCollisionShapeStar obj,
+    				2: required Transform trans
     ),
     void setinterpolationlinearvelocity2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 vel
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 vel
     ),
     void setinterpolationangularvelocity2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 ang
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 ang
     ),
     void setinterpolationvelocity2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 lin,
-    				3: required vector3 ang
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 lin,
+    				3: required Vector3 ang
     ),
-    vector3 getinterpolationlinearvelocity2(
-    				1: required btcollisionshapestar obj
+    Vector3 getinterpolationlinearvelocity2(
+    				1: required btCollisionShapeStar obj
     ),
-    vector3 getinterpolationangularvelocity2(
-    				1: required btcollisionshapestar obj
+    Vector3 getinterpolationangularvelocity2(
+    				1: required btCollisionShapeStar obj
     ),
     ffloat gethitfraction2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void sethitfraction2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat val
     ),
     int getcollisionflags2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     uint32_t setcollisionflags2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required uint32_t flags
     ),
     uint32_t addtocollisionflags2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required uint32_t flags
     ),
     uint32_t removefromcollisionflags2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required uint32_t flags
     ),
     ffloat getccdsweptsphereradius2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setccdsweptsphereradius2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat val
     ),
     ffloat getccdmotionthreshold2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     ffloat getsquareccdmotionthreshold2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setccdmotionthreshold2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat val
     ),
-    voidstar getuserpointer2(
-    				1: required btcollisionshapestar obj
+    voidStar getuserpointer2(
+    				1: required btCollisionShapeStar obj
     ),
     void setuserpointer2(
-    				1: required btcollisionshapestar obj,
-                    2: voidstar ptr
+    				1: required btCollisionShapeStar obj,
+                    2: voidStar ptr
     ),
     // ==================================================================================
     // btrigidbody methods
     // these are in the order found in btrigidbody.h
     void applygravity2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setgravity2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 grav
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 grav
     ),
-    				1: required vector3 getgravity2(
-    				2: required btcollisionshapestar obj
+	Vector3 getgravity2(
+    				2: required btCollisionShapeStar obj
     ),
     void setdamping2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat lin_damping,
     				3: required ffloat ang_damping
     ),
     void setlineardamping2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat lin_damping
     ),
     void setangulardamping2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat ang_damping
     ),
     ffloat getlineardamping2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     ffloat getangulardamping2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     ffloat getlinearsleepingthreshold2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     ffloat getangularsleepingthreshold2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void applydamping2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat timestep
     ),
     void setmassprops2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat mass,
-    				3: required vector3 inertia
+    				3: required Vector3 inertia
     ),
-    vector3 getlinearfactor2(
-    				1: required btcollisionshapestar obj
+    Vector3 getlinearfactor2(
+    				1: required btCollisionShapeStar obj
     ),
     void setlinearfactor2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 fact
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 fact
     ),
-    void setcenterofmasstransform2(
-    				1: required btcollisionshapestar obj,
-    				2: required transform trans
+    void setcenterofmassTransform2(
+    				1: required btCollisionShapeStar obj,
+    				2: required Transform trans
     ),
     void setcenterofmassbyposrot2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 pos,
-    				3: required quaternion rot
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 pos,
+    				3: required Quaternion rot
     ),
     void applycentralforce2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 force
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 force
     ),
     void setobjectforce2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 force
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 force
     ),
-    vector3 gettotalforce2(
-    				1: required btcollisionshapestar obj
+    Vector3 gettotalforce2(
+    				1: required btCollisionShapeStar obj
     ),
-    vector3 gettotaltorque2(
-    				1: required btcollisionshapestar obj
+    Vector3 gettotaltorque2(
+    				1: required btCollisionShapeStar obj
     ),
-    vector3 getinvinertiadiaglocal2(
-    				1: required btcollisionshapestar obj
+    Vector3 getinvinertiadiaglocal2(
+    				1: required btCollisionShapeStar obj
     ),
     void setinvinertiadiaglocal2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 inert
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 inert
     ),
     void setsleepingthresholds2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat lin_threshold,
     				3: required ffloat ang_threshold
     ),
     void applytorque2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 force
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 force
     ),
     void applyforce2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 force,
-    				3: required vector3 pos
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 force,
+    				3: required Vector3 pos
     ),
     void applycentralimpulse2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 force
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 force
     ),
     void applytorqueimpulse2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 force
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 force
     ),
     void applyimpulse2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 force,
-    				3: required vector3 pos
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 force,
+    				3: required Vector3 pos
     ),
     void clearforces2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void clearallforces2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void updateinertiatensor2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
-    vector3 getcenterofmassposition2(
-    				1: required btcollisionshapestar obj
+    Vector3 getcenterofmassposition2(
+    				1: required btCollisionShapeStar obj
     ),
-    quaternion getorientation2(
-    				1: required btcollisionshapestar obj
+    Transform getcenterofmassTransform2(
+    				1: required btCollisionShapeStar obj
     ),
-    transform getcenterofmasstransform2(
-    				1: required btcollisionshapestar obj
+    Vector3 getlinearvelocity2(
+    				1: required btCollisionShapeStar obj
     ),
-    vector3 getlinearvelocity2(
-    				1: required btcollisionshapestar obj
-    ),
-    vector3 getangularvelocity2(
-    				1: required btcollisionshapestar obj
+    Vector3 getangularvelocity2(
+    				1: required btCollisionShapeStar obj
     ),
     void setlinearvelocity2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 velocity
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 velocity
     ),
     void setangularvelocity2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 angularvelocity
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 angularvelocity
     ),
-    vector3 getvelocityinlocalpoint2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 pos
+    Vector3 getvelocityinlocalpoint2(
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 pos
     ),
     void translate2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 trans
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 trans
     ),
     void updatedeactivation2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat timestep
     ),
     bool wantssleeping2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void setangularfactor2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required ffloat fact
     ),
     void setangularfactorv2(
-    				1: required btcollisionshapestar obj,
-    				2: required vector3 fact
+    				1: required btCollisionShapeStar obj,
+    				2: required Vector3 fact
     ),
-    vector3 getangularfactor2(
-    				1: required btcollisionshapestar obj
+    Vector3 getangularfactor2(
+    				1: required btCollisionShapeStar obj
     ),
     bool isinworld2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     void addconstraintref2(
-    				1: required btcollisionshapestar obj,
-    				2: required bttypedconstraintstar constrain
+    				1: required btCollisionShapeStar obj,
+    				2: required btTypedConstraintStar constrain
     ),
     void removeconstraintref2(
-    				1: required btcollisionshapestar obj,
-    				2: required bttypedconstraintstar constrain
+    				1: required btCollisionShapeStar obj,
+    				2: required btTypedConstraintStar constrain
     ),
-    bttypedconstraintstar getconstraintref2(
-    				1: required btcollisionshapestar obj,
+    btTypedConstraintStar getconstraintref2(
+    				1: required btCollisionShapeStar obj,
     				2: required int index
     ),
     int getnumconstraintrefs2(
-    				1: required btcollisionshapestar obj
+    				1: required btCollisionShapeStar obj
     ),
     // ========================================
-    // btcollisionshapestar methods and related
+    // btCollisionShapeStar methods and related
     ffloat getangularmotiondisc2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     ffloat getcontactbreakingthreshold2(
-    				1: required btcollisionshapestar shape,
+    				1: required btCollisionShapeStar shape,
     				2: required ffloat defaultfactor
     ),
     bool isployhedral2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     bool isconvex2d2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     bool isconvex2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     bool isnonmoving2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     bool isconcave2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     bool iscompound2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     bool issoftbody2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     bool isinfinite2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     void setlocalscaling2(
-    				1: required btcollisionshapestar shape,
-    				2: required vector3 scale
+    				1: required btCollisionShapeStar shape,
+    				2: required Vector3 scale
     ),
-    vector3 getlocalscaling2(
-    				1: required btcollisionshapestar shape
+    Vector3 getlocalscaling2(
+    				1: required btCollisionShapeStar shape
     ),
-    vector3 calculatelocalinertia2(
-    				1: required btcollisionshapestar shape,
+    Vector3 calculatelocalinertia2(
+    				1: required btCollisionShapeStar shape,
     				2: required ffloat mass
     ),
     int getshapetype2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     void setmargin2(
-    				1: required btcollisionshapestar shape,
+    				1: required btCollisionShapeStar shape,
     				2: required ffloat val
     ),
     ffloat getmargin2(
-    				1: required btcollisionshapestar shape
+    				1: required btCollisionShapeStar shape
     ),
     bool setcollisiongroupmask2(
-    				1: required btcollisionshapestar obj,
+    				1: required btCollisionShapeStar obj,
     				2: required i32 group,
     				3: required i32 mask
     ),
@@ -983,6 +1003,7 @@ service BulletSimStarThrift {
     				2: required i32 id
     ),
 
+	/*
     // Debugging
     // Dump a btCollisionObject and even more if it's a btRigidBody.
     void DumpRigidBody2(
@@ -1013,4 +1034,6 @@ service BulletSimStarThrift {
     ),
     void DumpActivationInfo2(
     				1: required BulletSimStar sim
-    ),
+    )
+	*/
+}
