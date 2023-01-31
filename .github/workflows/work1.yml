@@ -1,4 +1,4 @@
-# Buid BulletSim binaries from the latest Bullet and BulletSim glue sources
+# Build BulletSim binaries from the latest Bullet and BulletSim glue sources
 # TEMP VERSION TO DEBUG BUILDING on branch 'workflow1'.
 
 name: BulletSim binaries
@@ -13,7 +13,11 @@ jobs:
     strategy:
       matrix: 
         # os: [ ubuntu-latest, macos-latest, windows-latest ]
-        os: [ ubuntu-latest, macos-latest ]
+        include:
+          - os: ubuntu-latest
+            ext: so
+          - os: macos-latest
+            ext: dynlib
 
     runs-on: ${{ matrix.os }}
 
@@ -38,6 +42,14 @@ jobs:
         run: |
           cd bulletsim
           ./buildBulletSim.sh
+          echo "BUILT=*.${{ matrix.ext }}" > $GITHUB_ENV
+
+      - name: Upload built image
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.os }}-${{ github.event.number }}
+          path: bulletsim/*.${{ matrix.ext }}
+          if-no-files-found: error
 
 # vim: tabstop=2 shiftwidth=2 autoindent expandtab
 
