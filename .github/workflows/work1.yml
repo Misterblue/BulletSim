@@ -1,0 +1,42 @@
+# Buid BulletSim binaries from the latest Bullet and BulletSim glue sources
+# TEMP VERSION TO DEBUG BUILDING on branch 'workflow1'.
+
+name: BulletSim binaries
+
+on:
+  push:
+    branches: 
+      - workflow1
+
+jobs:
+  build:
+    strategy:
+      matrix: 
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+        with:
+          ref: dotnet6
+          path: bulletsim
+
+      - name: download Bullet
+        run: |
+          cd bulletsim
+          git clone https://github.com/bulletphysics/bullet3.git
+
+      - name: build Bullet physics engine
+        run: |
+          cd bulletsim
+          BULLETDIR=bullet3 ./buildBulletCMake.sh
+
+      - name: build BulletSim
+        run: |
+          cd bulletsim
+          ./buildBulletSim.sh
+
+# vim: tabstop=2 shiftwidth=2 autoindent expandtab
+
