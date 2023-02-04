@@ -16,8 +16,8 @@ jobs:
         include:
           - os: ubuntu-20.04
             ext: so
-          - os: macos-latest
-            ext: dynlib
+          - os: macos-12
+            ext: dylib
 
     runs-on: ${{ matrix.os }}
 
