@@ -36,7 +36,7 @@ jobs:
       - name: apply patches to Bullet
         run: |
           cd bulletsim/bullet3
-          for file in ../*.patch ; do cat $file | patch -p1 ; done
+          for file in ../00*.patch ; do cat $file | patch -p1 ; done
 
       - name: build Bullet physics engine
         run: |
