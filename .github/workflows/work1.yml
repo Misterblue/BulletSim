@@ -30,6 +30,7 @@ jobs:
 
       - name: download Bullet
         uses: actions/checkout@v3
+        with:
           repository: bulletphysics/bullet3
           path: bulletsim
 
