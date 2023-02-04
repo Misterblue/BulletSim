@@ -47,7 +47,7 @@ jobs:
       - name: Upload built image
         uses: actions/upload-artifact@v3
         with:
-          name: build-${{ matrix.os }}-${{ github.event.number }}
+          name: binary-${{ matrix.os }}
           path: bulletsim/*.${{ matrix.ext }}
           if-no-files-found: error
 

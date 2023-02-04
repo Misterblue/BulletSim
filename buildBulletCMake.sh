@@ -155,7 +155,7 @@ done
 echo "=== Moving Bullet's VERSION file into ../include"
 cd "$STARTDIR"
 mkdir -p include
-cp "${BULLETDIR}/VERSION" include/
+cp "${BULLETDIR}/VERSION" lib/
 
 echo "=== Moving .h files from Extras into ../include"
 cd "$STARTDIR"
