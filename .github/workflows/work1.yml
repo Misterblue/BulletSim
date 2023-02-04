@@ -25,13 +25,13 @@ jobs:
       - name: git checkout
         uses: actions/checkout@v3
         with:
-          ref: dotnet6
+          ref: workflow1
           path: bulletsim
 
       - name: download Bullet
-        run: |
-          cd bulletsim
-          git clone https://github.com/bulletphysics/bullet3.git
+        uses: actions/checkout@v3
+          repository: bulletphysics/bullet3
+          path: bulletsim
 
       - name: build Bullet physics engine
         run: |
