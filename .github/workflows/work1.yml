@@ -28,11 +28,15 @@ jobs:
           ref: workflow1
           path: bulletsim
 
-      - name: download Bullet
-        uses: actions/checkout@v3
-        with:
-          repository: bulletphysics/bullet3
-          path: bulletsim
+      - name: checkout Bullet
+        run: |
+          cd bulletsim
+          git clone --depth=1 https://github.com/bulletphysics/bullet3.git
+
+      - name: apply patches to Bullet
+        run: |
+          cd bulletsim/bullet3
+          for file in ../*.patch ; do cat $file | patch -p1 ; done
 
       - name: build Bullet physics engine
         run: |
