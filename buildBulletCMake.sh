@@ -151,8 +151,8 @@ for file in $(find . -name \*.h) ; do
     cp "$file" "$xxxx"
 done
 
-# Move Bullet's VERSION file into include/ so BulletSim can include it
-echo "=== Moving Bullet's VERSION file into ../include"
+# Move Bullet's VERSION file into lib/ so BulletSim can reference it
+echo "=== Moving Bullet's VERSION file into ../lib"
 cd "$STARTDIR"
 mkdir -p include
 cp "${BULLETDIR}/VERSION" lib/
