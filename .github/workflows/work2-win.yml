@@ -42,10 +42,16 @@ jobs:
       - name: apply patches to Bullet
         run: |
           cd bulletsim/bullet3
-          git apply ../00*
+          git apply ../00*.patch
+          for /f "delims=" %%p in ('dir ../00*.patch') do ( git apply %%p )
 
       - name: install CMake
         uses: jwlawson/actions-setup-cmake@v1.13
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6
 
       - name: build Bullet physics engine for Windows
         run: |
