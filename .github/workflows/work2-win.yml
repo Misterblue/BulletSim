@@ -52,10 +52,20 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: build Bullet physics engine for Windows
+      - name: build Bullet build files
         run: |
           cd bulletsim
           ./buildBulletCMake.${{ matrix.script }}
+
+      - name: some debug
+        run: |
+          cd bulletsim/bullet3/build-bullet
+          dir
+
+      - name: build Bullet physics engine
+        run: |
+          cd bulletsim/bullet3/build-bullet
+          dotnet build -c Release bullet3.sln
 
       - name: build BulletSim
         run: |
