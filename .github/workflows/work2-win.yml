@@ -50,7 +50,7 @@ jobs:
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: 6
+          dotnet-version: '6.0.x'
 
       - name: build Bullet physics engine for Windows
         run: |
