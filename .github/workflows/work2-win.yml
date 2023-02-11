@@ -59,12 +59,12 @@ jobs:
 
       - name: some debug
         run: |
-          cd bulletsim/bullet3/build-bullet
+          cd bulletsim/bullet3/bullet-build
           dir
 
       - name: build Bullet physics engine
         run: |
-          cd bulletsim/bullet3/build-bullet
+          cd bulletsim/bullet3/bullet-build
           dotnet build -c Release bullet3.sln
 
       - name: build BulletSim
