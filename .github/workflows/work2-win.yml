@@ -65,7 +65,7 @@ jobs:
       - name: build Bullet physics engine
         run: |
           cd bulletsim/bullet3/bullet-build
-          dotnet build -c Release bullet3.sln
+          dotnet build -c Release BULLET_PHYSICS.sln
 
       - name: build BulletSim
         run: |
