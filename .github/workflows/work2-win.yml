@@ -42,8 +42,7 @@ jobs:
       - name: apply patches to Bullet
         run: |
           cd bulletsim/bullet3
-          git apply ../00*.patch
-          for %%p in ( ../00*.patch ) do git apply %%p
+          Get-ChildItem -Path ../00*.patch | ForEach-Object { git apply $_.FullName }
 
       - name: install CMake
         uses: jwlawson/actions-setup-cmake@v1.13
