@@ -47,10 +47,13 @@ jobs:
       - name: install CMake
         uses: jwlawson/actions-setup-cmake@v1.13
 
-      - name: Setup Dotnet
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: '6.0.x'
+#      - name: Setup Dotnet
+#        uses: actions/setup-dotnet@v2
+#        with:
+#          dotnet-version: '6.0.x'
+
+      - name: Setup MSVC
+        uses: miscrosoft/setup-msbuild@v1.0.2
 
       - name: build Bullet build files
         run: |
@@ -65,7 +68,8 @@ jobs:
       - name: build Bullet physics engine
         run: |
           cd bulletsim/bullet3/bullet-build
-          dotnet build -c Release BULLET_PHYSICS.sln
+          make --build . --config Release
+#         dotnet build -c Release BULLET_PHYSICS.sln
 
       - name: build BulletSim
         run: |
