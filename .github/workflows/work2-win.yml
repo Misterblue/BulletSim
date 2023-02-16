@@ -68,8 +68,14 @@ jobs:
       - name: build Bullet physics engine
         run: |
           cd bulletsim/bullet3/bullet-build
-          make --build . --config Release
+          make -j4
 #         dotnet build -c Release BULLET_PHYSICS.sln
+
+      - name: more debug
+        run: |
+          Get-ChildItem -Path bulletsim/bullet3/bullet-build/ -Filter *.lib -File -Recurse -ErrorAction SilentlyContinue | Where { ! $_.PSIsContainer } | Select Name
+          Get-ChildItem -Path bulletsim/bullet3/bullet-build/ -Filter *.dll -File -Recurse -ErrorAction SilentlyContinue | Where { ! $_.PSIsContainer } | Select Name
+          Get-ChildItem -Path bulletsim/bullet3/bullet-build/ -Filter *.so -File -Recurse -ErrorAction SilentlyContinue | Where { ! $_.PSIsContainer } | Select Name
 
       - name: build BulletSim
         run: |
