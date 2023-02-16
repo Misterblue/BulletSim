@@ -47,10 +47,10 @@ jobs:
       - name: install CMake
         uses: jwlawson/actions-setup-cmake@v1.13
 
-#      - name: Setup Dotnet
-#        uses: actions/setup-dotnet@v2
-#        with:
-#          dotnet-version: '6.0.x'
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
 
       - name: Setup MSVC
         uses: microsoft/setup-msbuild@v1.3.1
@@ -68,13 +68,15 @@ jobs:
       - name: build Bullet physics engine
         run: |
           cd bulletsim/bullet3/bullet-build
-          make -j4
-#         dotnet build -c Release BULLET_PHYSICS.sln
+          dotnet build -c Release BULLET_PHYSICS.sln
 
       - name: more debug
         run: |
+          echo "============== LIB"
           Get-ChildItem -Path bulletsim/bullet3/bullet-build/ -Filter *.lib -File -Recurse -ErrorAction SilentlyContinue | Where { ! $_.PSIsContainer } | Select Name
+          echo "============== DLL"
           Get-ChildItem -Path bulletsim/bullet3/bullet-build/ -Filter *.dll -File -Recurse -ErrorAction SilentlyContinue | Where { ! $_.PSIsContainer } | Select Name
+          echo "============== SO"
           Get-ChildItem -Path bulletsim/bullet3/bullet-build/ -Filter *.so -File -Recurse -ErrorAction SilentlyContinue | Where { ! $_.PSIsContainer } | Select Name
 
       - name: build BulletSim
