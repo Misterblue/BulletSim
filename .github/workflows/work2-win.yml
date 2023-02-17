@@ -57,10 +57,11 @@ jobs:
 
       - name: build Bullet build files
         run: |
-#          cd bulletsim
-#          ./buildBulletCMake.${{ matrix.script }}
           cd bulletsim/bullet3/build3
           premake5 --targetdir="../bin" vs2010
+
+#          cd bulletsim
+#          ./buildBulletCMake.${{ matrix.script }}
 
       - name: some debug
         run: |
