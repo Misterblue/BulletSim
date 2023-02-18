@@ -43,7 +43,7 @@ jobs:
         shell: bash
         run: |
           cd bulletsim/bullet3
-          for file in ../00*.patch ; do cat $file | git apply $file ; done
+          for file in ../00*.patch ; do echo "====== $file" ; git apply $file ; done
 
       - name: install CMake
         uses: jwlawson/actions-setup-cmake@v1.13
@@ -63,25 +63,17 @@ jobs:
           ./buildBulletCMake.sh
 
       - name: some debug
-        run: |
-          cd bulletsim/bullet3
-          dir
-          cd bulletsim/bullet3/build3
-          dir
-
-      - name: build Bullet physics engine
+        shell: bash
         run: |
           cd bulletsim/bullet3/bullet-build
-          dotnet build -c Release BULLET_PHYSICS.sln
-
-      - name: more debug
-        run: |
-          echo "============== LIB"
-          Get-ChildItem -Path bulletsim/bullet3/bullet-build/ -Filter *.lib -File -Recurse -ErrorAction SilentlyContinue | Where { ! $_.PSIsContainer } | Select Name
-          echo "============== DLL"
-          Get-ChildItem -Path bulletsim/bullet3/bullet-build/ -Filter *.dll -File -Recurse -ErrorAction SilentlyContinue | Where { ! $_.PSIsContainer } | Select Name
-          echo "============== SO"
-          Get-ChildItem -Path bulletsim/bullet3/bullet-build/ -Filter *.so -File -Recurse -ErrorAction SilentlyContinue | Where { ! $_.PSIsContainer } | Select Name
+          echo "=== bulletsim/bullet3/bullet-build"
+          ls -ld
+          cd bulletsim/lib
+          echo "=== bulletsim/lib"
+          ls -ld
+          cd cd ../include
+          echo "=== bulletsim/include"
+          ls -ld
 
       - name: build BulletSim
         run: |
