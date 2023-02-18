@@ -67,13 +67,13 @@ jobs:
         run: |
           cd bulletsim/bullet3/bullet-build
           echo "=== bulletsim/bullet3/bullet-build"
-          ls -ld
-          cd bulletsim/lib
+          ls -l
+          cd ../../lib
           echo "=== bulletsim/lib"
-          ls -ld
+          ls -l
           cd cd ../include
           echo "=== bulletsim/include"
-          ls -ld
+          ls -l
 
       - name: build BulletSim
         run: |
