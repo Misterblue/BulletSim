@@ -71,7 +71,7 @@ jobs:
           cd ../../lib
           echo "=== bulletsim/lib"
           ls -l
-          cd cd ../include
+          cd ../include
           echo "=== bulletsim/include"
           ls -l
 
