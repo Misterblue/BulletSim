@@ -1,1 +1,1 @@
-dotnet build -c Release BulletSim.sln
+msbuild -p:Configuration=Release BulletSim.sln
