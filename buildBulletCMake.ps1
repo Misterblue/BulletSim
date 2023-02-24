@@ -1,4 +1,4 @@
-rem Script to build Bullet on a target system.
+# Script to build Bullet on a Windows system
 
 set MACH=x64
 set BULLETDIR=bullet3
