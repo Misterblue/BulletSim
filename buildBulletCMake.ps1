@@ -5,9 +5,9 @@ set BULLETDIR=bullet3
 
 set BUILDDIR=bullet-build
 
-cd %BULLETDIR%
-mkdir -p %BUILDDIR%
-cd %BUILDDIR%
+cd $BULLETDIR
+mkdir -p $BUILDDIR
+cd $BUILDDIR
 
 echo "=== Building Bullet in dir %BULLETDIR% for arch %MACH% into %BUILDDIR%"
 
