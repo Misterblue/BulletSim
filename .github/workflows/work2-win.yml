@@ -67,23 +67,11 @@ jobs:
           cd bulletsim/bullet3/bullet-build
           echo "=== bulletsim/bullet3/bullet-build"
           ls -l
-
-      - name: build Bullet
-        run: |
-          cd bulletsim/bullet3/bullet-build
-          msbuild -p:Configuration=Release BULLET_PHYSICS.sln
-
-      - name: some debug
-        shell: bash
-        run: |
-          cd bulletsim/bullet3/bullet-build
-          echo "=== bulletsim/bullet3/bullet-build"
-          ls -l
-          echo "=== find . -name \*.lib in bulletsim/bullet3/bullet-build"
-          find . -name \*.lib
-          echo "=== find . -name \*.a in bulletsim/bullet3/bullet-build"
-          find . -name \*.a
-
+          cd ../../
+          echo "=== lib"
+          ls -l lib
+          echo "=== include"
+          ls -l include
 
       - name: build BulletSim
         run: |
