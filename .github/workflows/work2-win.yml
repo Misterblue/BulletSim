@@ -57,6 +57,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.3.1
 
       - name: build Bullet build files
+        shell: pwsh
         run: |
           cd bulletsim
           ./buildBulletCMake.${{ matrix.script }}
@@ -64,10 +65,8 @@ jobs:
       - name: some debug
         shell: bash
         run: |
-          cd bulletsim/bullet3/bullet-build
           echo "=== bulletsim/bullet3/bullet-build"
-          ls -l
-          cd ../../
+          ls -l bulletsim/bullet3/bullet-build
           echo "=== lib"
           ls -l lib
           echo "=== include"
