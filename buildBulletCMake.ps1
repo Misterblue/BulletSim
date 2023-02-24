@@ -1,9 +1,9 @@
 # Script to build Bullet on a Windows system
 
-$MACH=x64
-$BULLETDIR=bullet3
+$MACH="x64"
+$BULLETDIR="bullet3"
 
-$BUILDDIR=bullet-build
+$BUILDDIR="bullet-build"
 
 cd $BULLETDIR
 New-Item -ItemType Directory -Path $BUILDDIR -Force
