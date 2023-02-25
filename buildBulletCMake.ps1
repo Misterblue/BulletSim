@@ -15,7 +15,7 @@ cmake -G "Visual Studio 17 2022" -A $MACH -DDOTNET_SDK=ON -DBUILD_BULLET3=ON -DB
 
 msbuild -p:Configuration=Release BULLET_PHYSICS.sln
 
-rem Copy the .lib files into the target lib directory
+# Copy the .lib files into the target lib directory
 Set-Location ..\..
 New-Item -ItemType Directory -Path lib -Force
 Write-Host "=== Copy .lib files into the lib dir"
@@ -23,14 +23,14 @@ Get-Children -Path bullet3\bullet-build\* -Include *.lib -Recurse | ForEach-Obje
     Copy-Item $_.FullName -Destination lib -Force
 }
 
-rem Copy the .h files into the target include directory
+# Copy the .h files into the target include directory
 Get-ChildItem -Path bullet3\src\* -Include *.h -Recurse | ForEach-Object {
     $xxxx = $_.Fullname -replace ".*\bullet3\src\","include\"
     New-Item -ItemType Directory -Path $xxxx -Force
     Copy-Item $_.FullName -Destination $xxxx -Force
 }
 
-rem Copy the .h files from Extras into the target include directory
+# Copy the .h files from Extras into the target include directory
 Get-ChildItem -Path bullet3\Extras\* -Include *.h -Recurse | ForEach-Object {
     $xxxx = $_.Fullname -replace ".*\bullet3\Extras\","include\"
     New-Item -ItemType Directory -Path $xxxx -Force
