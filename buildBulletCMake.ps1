@@ -19,7 +19,7 @@ msbuild -p:Configuration=Release BULLET_PHYSICS.sln
 Set-Location ..\..
 New-Item -ItemType Directory -Path lib -Force
 Write-Host "=== Copy .lib files into the lib dir"
-Get-Children -Path bullet3\bullet-build\* -Include *.lib -Recurse | ForEach-Object {
+Get-ChildItem -Path bullet3\bullet-build\* -Include *.lib -Recurse | ForEach-Object {
     Copy-Item $_.FullName -Destination lib -Force
 }
 
