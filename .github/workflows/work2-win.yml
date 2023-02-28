@@ -66,8 +66,9 @@ jobs:
       - name: some debug
         shell: bash
         run: |
-          echo "=== bulletsim/bullet3/bullet-build"
-          ls -l bulletsim/bullet3/bullet-build
+          cd bulletsim
+          echo "=== bullet3/bullet-build"
+          ls -l bullet3/bullet-build
           echo "=== lib"
           ls -l lib
           echo "=== include"
