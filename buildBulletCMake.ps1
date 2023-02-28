@@ -20,20 +20,25 @@ Set-Location ..\..
 New-Item -ItemType Directory -Path lib -Force
 Write-Host "=== Copy .lib files into the lib dir"
 Get-ChildItem -Path bullet3\bullet-build\* -Include *.lib -Recurse | ForEach-Object {
-    Copy-Item $_.FullName -Destination lib -Force
+    echo "----- copying $_.Fullname to lib"
+    Copy-Item $_.Fullname -Destination lib -Force
 }
 
 # Copy the .h files into the target include directory
+Write-Host "=== Copy .h files into the include dir"
 Get-ChildItem -Path bullet3\src\* -Include *.h -Recurse | ForEach-Object {
     $xxxx = $_.Fullname -replace ".*\bullet3\src\","include\"
+    echo "----- copying $_.Fullname to $xxxx"
     New-Item -ItemType Directory -Path $xxxx -Force
-    Copy-Item $_.FullName -Destination $xxxx -Force
+    Copy-Item $_.Fullname -Destination $xxxx -Force
 }
 
 # Copy the .h files from Extras into the target include directory
+Write-Host "=== Copy Extras .h files into the include dir"
 Get-ChildItem -Path bullet3\Extras\* -Include *.h -Recurse | ForEach-Object {
     $xxxx = $_.Fullname -replace ".*\bullet3\Extras\","include\"
+    echo "----- copying $_.Fullname to $xxxx"
     New-Item -ItemType Directory -Path $xxxx -Force
-    Copy-Item $_.FullName -Destination $xxxx -Force
+    Copy-Item $_.Fullname -Destination $xxxx -Force
 }
 
