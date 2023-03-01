@@ -97,7 +97,7 @@
     <ClInclude Include="include/BulletCollision/BroadphaseCollision/btBroadphaseProxy.h" />
     <ClInclude Include="include/BulletCollision/CollisionShapes/btTriangleShape.h" />
     <ClInclude Include="include/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h" />
-    <ClInclude Include="include/BulletCollision/Gimpact/btGImpactShape.h"
+    <ClInclude Include="include/BulletCollision/Gimpact/btGImpactShape.h" />
 
     <ClInclude Include="include/LinearMath/btAlignedObjectArray.h" />
     <ClInclude Include="include/LinearMath/btMotionState.h" />
