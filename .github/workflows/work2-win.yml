@@ -83,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.artif }}
-          path: bulletsim/*.${{ matrix.ext }}
+          path: bulletsim/x64/Release/*.${{ matrix.ext }}
           if-no-files-found: error
 
 # vim: tabstop=2 shiftwidth=2 autoindent expandtab
