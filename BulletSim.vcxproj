@@ -90,21 +90,21 @@
     <ClInclude Include="DebugLogic.h" />
     <ClInclude Include="WorldData.h" />
 
-    <ClInclude Include="include/btBulletDynamicsCommon.h" />
-    <ClInclude Include="include/BulletCollision/CollisionDispatch/btGhostObject.h" />
-    <ClInclude Include="include/BulletCollision/CollisionDispatch/btSimulationIslandManager.h" />
-    <ClInclude Include="include/BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h" />
-    <ClInclude Include="include/BulletCollision/BroadphaseCollision/btBroadphaseProxy.h" />
-    <ClInclude Include="include/BulletCollision/CollisionShapes/btTriangleShape.h" />
-    <ClInclude Include="include/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h" />
-    <ClInclude Include="include/BulletCollision/Gimpact/btGImpactShape.h" />
+    <ClInclude Include="btBulletDynamicsCommon.h" />
+    <ClInclude Include="BulletCollision/CollisionDispatch/btGhostObject.h" />
+    <ClInclude Include="BulletCollision/CollisionDispatch/btSimulationIslandManager.h" />
+    <ClInclude Include="BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h" />
+    <ClInclude Include="BulletCollision/BroadphaseCollision/btBroadphaseProxy.h" />
+    <ClInclude Include="BulletCollision/CollisionShapes/btTriangleShape.h" />
+    <ClInclude Include="BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h" />
+    <ClInclude Include="BulletCollision/Gimpact/btGImpactShape.h" />
 
-    <ClInclude Include="include/LinearMath/btAlignedObjectArray.h" />
-    <ClInclude Include="include/LinearMath/btMotionState.h" />
-    <ClInclude Include="include/LinearMath/btGeometryUtil.h" />
+    <ClInclude Include="LinearMath/btAlignedObjectArray.h" />
+    <ClInclude Include="LinearMath/btMotionState.h" />
+    <ClInclude Include="LinearMath/btGeometryUtil.h" />
 
-    <ClInclude Include="include/HACD/hacdHACD.h" />
-    <ClInclude Include="include/HACD/hacdHACD.h" />
+    <ClInclude Include="HACD/hacdHACD.h" />
+    <ClInclude Include="HACD/hacdHACD.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="API2.cpp" />
