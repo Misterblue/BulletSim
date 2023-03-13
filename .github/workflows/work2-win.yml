@@ -74,6 +74,15 @@ jobs:
           echo "=== include"
           ls -l include
 
+      - name: create debug artifact of libs
+        uses: actions/upload-artifact@v3
+        with:
+          name: builtfiles
+          path: |
+            bulletsim/lib/
+            bulletsim/include/
+          if-no-files-found: error
+
       - name: build BulletSim
         run: |
           cd bulletsim
