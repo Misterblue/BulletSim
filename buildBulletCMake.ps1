@@ -30,23 +30,23 @@ Get-ChildItem -Path bullet3\src\* -Include *.h,*.inl -Recurse | ForEach-Object {
     $xxxx = $_.Fullname -replace ".*\\bullet3\\src\\","include\"
     $xxxxDir = Split-Path -parent $xxxx
     if ( -not (Test-Path "$xxxxDir" -PathType container)) {
-        # echo "----- creating directory $xxxxDir"
+        echo "----- creating directory $xxxxDir"
         New-Item -ItemType Directory -Path $xxxxDir -Force | Out-Null
     }
-    # echo "----- copying $_ to $xxxx"
+    echo "----- copying $_ to $xxxx"
     Copy-Item $_ -Destination $xxxx -Force
 }
 
 # Copy the .h files from Extras into the target include directory
 Write-Host "=== Copy Extras .h files into the include dir"
-Get-ChildItem -Path bullet3\Extras\* -Include *.h -Recurse | ForEach-Object {
+Get-ChildItem -Path bullet3\Extras\* -Include *.h,*.inl -Recurse | ForEach-Object {
     $xxxx = $_.Fullname -replace ".*\\bullet3\\Extras\\","include\"
     $xxxxDir = Split-Path -parent $xxxx
     if ( -not (Test-Path "$xxxxDir" -PathType container)) {
-        # echo "----- creating Extras directory $xxxxDir"
+        echo "----- creating Extras directory $xxxxDir"
         New-Item -ItemType Directory -Path $xxxxDir -Force | Out-Null
     }
-    # echo "----- copying Extras $_ to $xxxx"
+    echo "----- copying Extras $_ to $xxxx"
     Copy-Item $_ -Destination $xxxx -Force
 }
 
