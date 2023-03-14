@@ -59,7 +59,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalLibraryDirectories>.\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lib/libBulletDynamics.a;lib/libBulletCollision.a;lib/libLinearMath.a;lib/libHACD.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lib/libBulletDynamics.lib;lib/libBulletCollision.lib;lib/libLinearMath.lib;lib/libHACD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -80,7 +80,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalLibraryDirectories>.\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lib/libBulletDynamics.a;lib/libBulletCollision.a;lib/libLinearMath.a;lib/libHACD.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lib/libBulletDynamics.lib;lib/libBulletCollision.lib;lib/libLinearMath.lib;lib/libHACD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
