@@ -17,7 +17,7 @@ jobs:
         # os: [ ubuntu-latest, macos-latest, windows-latest ]
         include:
           - os: windows-latest
-            class: windows
+            osclass: windows
             name: "BulletSim binary build for Windows"
             build_type: Release
             ext: dll
@@ -58,30 +58,10 @@ jobs:
         uses: microsoft/setup-msbuild@v1.3.1
 
       - name: build Bullet build files
-        if: ${{ matrix.class == 'windows' }}
+        if: ${{ matrix.osclass == 'windows' }}
         run: |
           cd bulletsim
           ./buildBulletCMake.ps1
-
-      - name: some debug
-        shell: bash
-        run: |
-          cd bulletsim
-          echo "=== bullet3/bullet-build"
-          ls -l bullet3/bullet-build
-          echo "=== lib"
-          ls -l lib
-          echo "=== include"
-          ls -l include
-
-      - name: create debug artifact of libs
-        uses: actions/upload-artifact@v3
-        with:
-          name: builtfiles
-          path: |
-            bulletsim/lib/
-            bulletsim/include/
-          if-no-files-found: error
 
       - name: build BulletSim
         run: |
@@ -92,7 +72,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.artif }}
-          path: bulletsim/x64/Release/*.${{ matrix.ext }}
+          path: |
+            bulletsim/x64/Release/BulletSim.dll
+            bulletsim/x64/Release/BulletSim.lib
+            bulletsim/x64/Release/BulletSim.pdb
           if-no-files-found: error
 
 # vim: tabstop=2 shiftwidth=2 autoindent expandtab
