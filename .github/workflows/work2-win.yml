@@ -85,7 +85,7 @@ jobs:
           cd bulletsim
           ./buildBulletSim.bat
 
-      -name: move built files into destination directory structure
+      - name: move built files into destination directory structure
         shell: bash
         run: |
           mkdir -p lib64
