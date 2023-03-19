@@ -44,11 +44,25 @@ jobs:
         run: |
           echo "BuildDate=$(date +%Y%m%d)" >> $GITHUB_ENV
           cd bulletsim
-          echo "BulletSimGitVersion=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "BulletSimVersion=$(cat VERSION)" >> $GITHUB_ENV
+          echo "BulletSimGitVersion=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "BulletSimGitVersionShort=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           cd bullet3
-          echo "BulletGitVersion=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "BulletVersion=$(cat VERSION)" >> $GITHUB_ENV
+          echo "BulletGitVersion=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "BulletGitVersionShort=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: create VersionInfo file
+        shell: bash
+        run: |
+          cd bulletsim
+          echo "BuildDate=$BuildDate" > VersionInfo
+          echo "BulletSimVersion=$BulletSimVersion" >> VersionInfo
+          echo "BulletSimGitVersion=$BulletSimGitVersion" >> VersionInfo
+          echo "BulletSimGitVersionShort=$BulletSimGitVersionShort" >> VersionInfo
+          echo "BulletVersion=$BulletVersion" >> VersionInfo
+          echo "BulletGitVersion=$BulletGitVersion" >> VersionInfo
+          echo "BulletGitVersionShort=$BulletGitVersionShort" >> VersionInfo
 
       - name: install CMake
         uses: jwlawson/actions-setup-cmake@v1.13
@@ -69,7 +83,7 @@ jobs:
       - name: build BulletSim
         run: |
           cd bulletsim
-          ./buildBulletSim.ps1
+          ./buildBulletSim.bat
 
       - name: Upload built files
         if: success()
@@ -77,9 +91,10 @@ jobs:
         with:
           name: BulletSim-${{ matrix.osclass }}-${{ env.BuildDate }}
           path: |
-            bulletsim/x64/Release/BulletSim.dll
-            bulletsim/x64/Release/BulletSim.lib
-            bulletsim/x64/Release/BulletSim.pdb
+            bulletsim/VersionInfo
+            bulletsim/x64/${{ matrix.build_type }}/BulletSim.dll
+            bulletsim/x64/${{ matrix.build_type }}/BulletSim.lib
+            bulletsim/x64/${{ matrix.build_type }}/BulletSim.pdb
           if-no-files-found: error
 
 # vim: tabstop=2 shiftwidth=2 autoindent expandtab
