@@ -52,17 +52,17 @@ jobs:
           echo "BulletGitVersion=$(git rev-parse HEAD)" >> $GITHUB_ENV
           echo "BulletGitVersionShort=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: create VersionInfo file
+      - name: create BulletSimVersionInfo file
         shell: bash
         run: |
           cd bulletsim
-          echo "BuildDate=$BuildDate" > VersionInfo
-          echo "BulletSimVersion=$BulletSimVersion" >> VersionInfo
-          echo "BulletSimGitVersion=$BulletSimGitVersion" >> VersionInfo
-          echo "BulletSimGitVersionShort=$BulletSimGitVersionShort" >> VersionInfo
-          echo "BulletVersion=$BulletVersion" >> VersionInfo
-          echo "BulletGitVersion=$BulletGitVersion" >> VersionInfo
-          echo "BulletGitVersionShort=$BulletGitVersionShort" >> VersionInfo
+          echo "BuildDate=$BuildDate" > BulletSimVersionInfo
+          echo "BulletSimVersion=$BulletSimVersion" >> BulletSimVersionInfo
+          echo "BulletSimGitVersion=$BulletSimGitVersion" >> BulletSimVersionInfo
+          echo "BulletSimGitVersionShort=$BulletSimGitVersionShort" >> BulletSimVersionInfo
+          echo "BulletVersion=$BulletVersion" >> BulletSimVersionInfo
+          echo "BulletGitVersion=$BulletGitVersion" >> BulletSimVersionInfo
+          echo "BulletGitVersionShort=$BulletGitVersionShort" >> BulletSimVersionInfo
 
       - name: install CMake
         uses: jwlawson/actions-setup-cmake@v1.13
@@ -85,16 +85,21 @@ jobs:
           cd bulletsim
           ./buildBulletSim.bat
 
+      -name: move built files into destination directory structure
+        shell: bash
+        run: |
+          mkdir -p lib64
+          cp bulletsim/BulletSimVersionInfo lib64/
+          cp bulletsim/x64/${{ matrix.build_type }}/BulletSim.dll lib64/
+          cp bulletsim/x64/${{ matrix.build_type }}/BulletSim.lib lib64/
+          cp bulletsim/x64/${{ matrix.build_type }}/BulletSim.pdb lib64/
+
       - name: Upload built files
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: BulletSim-${{ matrix.osclass }}-${{ env.BuildDate }}
-          path: |
-            bulletsim/VersionInfo
-            bulletsim/x64/${{ matrix.build_type }}/BulletSim.dll
-            bulletsim/x64/${{ matrix.build_type }}/BulletSim.lib
-            bulletsim/x64/${{ matrix.build_type }}/BulletSim.pdb
+          path: lib64/*
           if-no-files-found: error
 
 # vim: tabstop=2 shiftwidth=2 autoindent expandtab
