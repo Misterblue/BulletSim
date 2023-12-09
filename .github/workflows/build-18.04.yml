@@ -1,0 +1,127 @@
+# Buid BulletSim binaries from the latest Bullet and BulletSim glue sources
+
+name: BulletSim Linux binaries
+
+on:
+  push:
+    branches: 
+      - test-18.04
+
+jobs:
+  build:
+    strategy:
+      matrix: 
+        # os: [ ubuntu-latest, macos-latest, windows-latest ]
+        include:
+          - os: ubuntu-18.04
+            osclass: ubuntu
+            name: "BulletSim binary build for Ubuntu"
+            build_type: Release
+            ext: so
+            scriptext: sh
+
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.name }}
+
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+        with:
+          ref: test-18.04
+          path: bulletsim
+
+      - name: checkout Bullet
+        uses: actions/checkout@v3
+        with:
+          repository: bulletphysics/bullet3
+          path: bulletsim/bullet3
+
+      - name: apply patches to Bullet
+        shell: bash
+        run: |
+          cd bulletsim/bullet3
+          for file in ../00*.patch ; do echo "====== $file" ; git apply $file ; done
+
+      - name: set env vars based on sources
+        shell: bash
+        run: |
+          echo "BuildDate=$(date +%Y%m%d)" >> $GITHUB_ENV
+          cd bulletsim
+          echo "BulletSimVersion=$(cat VERSION)" >> $GITHUB_ENV
+          echo "BulletSimGitVersion=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "BulletSimGitVersionShort=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          cd bullet3
+          echo "BulletVersion=$(cat VERSION)" >> $GITHUB_ENV
+          echo "BulletGitVersion=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "BulletGitVersionShort=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: create BulletSimVersionInfo file
+        shell: bash
+        run: |
+          cd bulletsim
+          echo "BuildDate=$BuildDate" > BulletSimVersionInfo
+          echo "BulletSimVersion=$BulletSimVersion" >> BulletSimVersionInfo
+          echo "BulletSimGitVersion=$BulletSimGitVersion" >> BulletSimVersionInfo
+          echo "BulletSimGitVersionShort=$BulletSimGitVersionShort" >> BulletSimVersionInfo
+          echo "BulletVersion=$BulletVersion" >> BulletSimVersionInfo
+          echo "BulletGitVersion=$BulletGitVersion" >> BulletSimVersionInfo
+          echo "BulletGitVersionShort=$BulletGitVersionShort" >> BulletSimVersionInfo
+
+      # Add CMake for Windows build
+      - name: install CMake
+        if: matrix.osclass == 'win'
+        uses: jwlawson/actions-setup-cmake@v1.13
+
+      # Add Dotnet for Windows build
+      - name: Setup Dotnet
+        if: matrix.osclass == 'win'
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      # Add MSVC libraries for Windows build
+      - name: Setup MSVC
+        if: matrix.osclass == 'win'
+        uses: microsoft/setup-msbuild@v1.3.1
+
+      - name: build Bullet physics engine
+        run: |
+          cd bulletsim
+          ./buildBulletCMake.${{ matrix.scriptext }}
+
+      - name: build BulletSim
+        run: |
+          cd bulletsim
+          ./buildBulletSim.${{ matrix.scriptext }}
+
+      # Dotnet build puts binaries in sub-dirs so move them to a standard place
+      - name: move dotnet built files into 'built' directory
+        if: matrix.osclass == 'win'
+        shell: bash
+        run: |
+          mkdir built
+          cp bulletsim/BulletSimVersionInfo built/
+          cp bulletsim/x64/${{ matrix.build_type }}/BulletSim.dll built/
+          cp bulletsim/x64/${{ matrix.build_type }}/BulletSim.lib built/
+          cp bulletsim/x64/${{ matrix.build_type }}/BulletSim.pdb built/
+
+      # Other targets just build the binaries
+      - name: move non-dotnet built files into 'built' directory
+        if: matrix.osclass != 'win'
+        shell: bash
+        run: |
+          mkdir built
+          cp bulletsim/BulletSimVersionInfo built/
+          cp bulletsim/*.${{ matrix.ext }} built/
+
+
+      - name: Upload built files
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: BulletSim-${{ matrix.osclass }}-${{ env.BuildDate }}
+          path: built/*
+          if-no-files-found: error
+
+# vim: tabstop=2 shiftwidth=2 autoindent expandtab
+
